@@ -1,67 +1,11 @@
-import 'package:flutter/foundation.dart';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChannels.platform.invokeMethod(
-    "add_view",
-    [
-      {
-        "name": "aaaa",
-        "width": 1920,
-        "height": 80,
-        "exclusive_zone": 80,
-        "layer": 1,
-        "anchors": {
-          "top": true,
-          "left": true,
-          "bottom": false,
-          "right": true,
-        },
-        "keyboard_interactivity": 0,
-        "margin": [0, 0, 0, 0],
-      }
-    ],
-  );
-
   runWidget(MyApp());
-
-  await SystemChannels.platform.invokeMethod(
-    "add_view",
-    [
-      {
-        "name": "bbbb",
-        "width": 300,
-        "height": 300,
-        "exclusive_zone": 0,
-        "layer": 2,
-        "anchors": {
-          "top": true,
-          "left": true,
-          "bottom": false,
-          "right": true,
-        },
-        "keyboard_interactivity": 0,
-        "margin": [0, 0, 0, 0],
-      }
-    ],
-  );
-  print("returned");
-  final view = PlatformDispatcher.instance.view(id: 1);
-  if (view == null) return;
-
-  print("Do have view");
-  runApp(
-    View(
-      view: view,
-      child: Container(
-        width: 300,
-        height: 300,
-        color: Colors.red,
-      ),
-    ),
-  );
 }
 
 class MyApp extends StatefulWidget {
@@ -73,45 +17,42 @@ class _MyAppState extends State<MyApp> {
   bool _menu = false;
   @override
   Widget build(BuildContext context) {
-    return View(
-      view: PlatformDispatcher.instance.implicitView!,
-      child: Directionality(
-        textDirection: TextDirection.ltr,
-        child: Theme(
-          data: ThemeData.from(
-            colorScheme: ColorScheme.fromSeed(
-              surface: Colors.transparent,
-              seedColor: Colors.deepOrange,
-            ),
-          ),
-          child: Row(
-            children: [
-              SizedBox(width: 10),
-              IconButton(
-                iconSize: 40,
-                onPressed: () async {},
-                icon: Icon(Icons.menu),
-              ),
-              Expanded(
-                child: Offstage(),
-              ),
-              IconButton(
-                iconSize: 40,
-                onPressed: () {},
-                icon: Icon(Icons.menu),
-              ),
-              Expanded(
-                child: Offstage(),
-              ),
-              IconButton(
-                iconSize: 40,
-                onPressed: () {},
-                icon: Icon(Icons.menu),
-              ),
-            ],
-          ),
-        ),
-      ),
+    final ever = Whatever(id: 1).create();
+    return PlatformViewLink(
+      viewType: "view-type",
+      surfaceFactory: (_, __) {
+        print("Are We here");
+        return Container(
+          width: 600,
+          height: 600,
+          color: Colors.red,
+        );
+      },
+      onCreatePlatformView: (_) {
+        return Whatever(id: 1);
+      },
     );
+  }
+}
+
+class Whatever extends PlatformViewController {
+  final int id;
+  Whatever({required this.id}) : super();
+
+  @override
+  Future<void> clearFocus() async {}
+
+  @override
+  Future<void> dispatchPointerEvent(PointerEvent event) async {}
+
+  @override
+  Future<void> dispose() async {}
+
+  @override
+  int get viewId => this.id;
+@override
+  Future<void> create({Size? size, Offset? position}) {
+    // TODO: implement create
+    return super.create(size: size, position: position);
   }
 }
