@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:yara_shell/network_client.dart';
+import 'package:yara_shell/temp.dart';
 import 'package:yara_shell/theme.dart';
 import 'package:yara_shell/views.dart';
 import 'package:yara_shell/ybar.dart';
@@ -14,22 +15,22 @@ void main() async {
     [
       {
         "name": "main",
-        "width": 1920,
-        "height": 60,
-        "exclusive_zone": 60,
-        "layer": 1,
+        "width": 600,
+        "height": 600,
+        "exclusive_zone": 0,
+        "layer": 2,
         "anchors": {
           "top": true,
-          "left": false,
-          "bottom": false,
-          "right": false
+          "left": true,
+          "bottom": true,
+          "right": true,
         },
-        "keyboard_interactivity": 0,
+        "keyboard_interactivity": 1,
         "margin": [0, 0, 0, 0]
       },
     ],
   );
-  runWidget(const Yara());
+  runApp(const SearchListWidget());
 }
 
 class Yara extends StatelessWidget {

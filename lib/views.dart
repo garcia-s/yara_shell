@@ -16,15 +16,15 @@ class ViewsProvider extends ChangeNotifier {
       [
         {
           "name": "main",
-          "width": 1920,
-          "height": 1080,
+          "width": 500,
+          "height": 500,
           "exclusive_zone": -1,
           "layer": 3,
           "anchors": {
             "top": true,
-            "left": false,
-            "bottom": false,
-            "right": false
+            "left": true,
+            "bottom": true,
+            "right": true,
           },
           "keyboard_interactivity": 1,
           "margin": [0, 0, 0, 0]
