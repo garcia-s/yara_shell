@@ -15,22 +15,22 @@ void main() async {
     [
       {
         "name": "main",
-        "width": 600,
-        "height": 600,
-        "exclusive_zone": 0,
+        "width": 1920,
+        "height": 60,
+        "exclusive_zone": 60,
         "layer": 2,
         "anchors": {
           "top": true,
-          "left": true,
-          "bottom": true,
-          "right": true,
+          "left": false,
+          "bottom": false,
+          "right": false,
         },
         "keyboard_interactivity": 1,
         "margin": [0, 0, 0, 0]
       },
     ],
   );
-  runApp(const SearchListWidget());
+  runWidget(const Yara());
 }
 
 class Yara extends StatelessWidget {

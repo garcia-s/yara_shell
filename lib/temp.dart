@@ -51,52 +51,51 @@ class _SearchListWidgetState extends State<SearchListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Search List'),
-        ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                onChanged: (_) {
-                  print("Text Changed");
-                },
-                focusNode: FocusNode(
-                  onKey: (_, e) {
-                    print(
-                      "Onkey Fired ${e.logicalKey.keyLabel} ${e.physicalKey.debugName}",
-                    );
-                    return KeyEventResult.ignored;
-                  },
-                  onKeyEvent: (_, e) {
-                    print(
-                      "OnkeyEvent Fired ${e.logicalKey.keyLabel} ${e.physicalKey.}",
-                    );
-                    return KeyEventResult.ignored;
-                  },
-                ),
-                controller: searchController,
-                autofocus: true,
-                decoration: const InputDecoration(
-                  labelText: 'Search',
-                  border: OutlineInputBorder(),
+    return MediaQuery.fromView(
+      view: View.of(context),
+      child: MaterialApp(
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text('Search List'),
+          ),
+          body: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: searchController,
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Search',
+                    border: OutlineInputBorder(),
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: filteredItems.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(filteredItems[index]),
-                  );
-                },
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  onChanged: (_) {
+                    print("Text Changed");
+                  },
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Search',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
               ),
-            ),
-          ],
+              Expanded(
+                child: ListView.builder(
+                  itemCount: filteredItems.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(filteredItems[index]),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
