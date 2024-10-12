@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:yara_shell/network_client.dart';
-import 'package:yara_shell/temp.dart';
 import 'package:yara_shell/theme.dart';
 import 'package:yara_shell/views.dart';
 import 'package:yara_shell/ybar.dart';
@@ -16,8 +15,8 @@ void main() async {
       {
         "name": "main",
         "width": 1920,
-        "height": 60,
-        "exclusive_zone": 60,
+        "height": 50,
+        "exclusive_zone": 50,
         "layer": 2,
         "anchors": {
           "top": true,

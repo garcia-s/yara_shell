@@ -8,6 +8,9 @@ final themeData = ThemeData(
           borderRadius: BorderRadius.circular(10),
         ),
       ),
+      padding: WidgetStatePropertyAll<EdgeInsets>(
+        EdgeInsets.all(0),
+      ),
     ),
   ),
   colorSchemeSeed: Colors.blue,
