@@ -6,18 +6,21 @@ class SearchListWidget extends StatefulWidget {
   State<SearchListWidget> createState() => _SearchListWidgetState();
 }
 
+class AppDescription {
+  final String name;
+  final String icon;
+  final String command;
+
+  AppDescription({
+    required this.name,
+    required this.icon,
+    required this.command,
+  });
+}
+
 class _SearchListWidgetState extends State<SearchListWidget> {
   // List of items to search through
-  final List<String> items = [
-    'Apple',
-    'Banana',
-    'Cherry',
-    'Date',
-    'Elderberry',
-    'Fig',
-    'Grape',
-    'Honeydew'
-  ];
+  final List<String> items = [];
 
   // List to hold the filtered items
   List<String> filteredItems = [];
