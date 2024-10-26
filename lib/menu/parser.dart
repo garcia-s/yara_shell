@@ -43,7 +43,7 @@ Future<Map<String, String>> readDesktopFile(File file) async {
   }
 }
 
-Future<void> getApplication() async {
+Future<List<AppDescription>> getApplications() async {
   final List<AppDescription> apps = [];
   for (int i = 0; i < locations.length; i++) {
     final dir = Directory(locations[i]);
@@ -54,7 +54,6 @@ Future<void> getApplication() async {
     await for (var f in dir.list()) {
       if (f is! File || !f.path.endsWith("desktop")) continue;
       final map = await readDesktopFile(f);
-
       apps.add(
         AppDescription(
           name: map["Name"] ?? "",
@@ -62,7 +61,7 @@ Future<void> getApplication() async {
           command: map["Exec"] ?? "",
         ),
       );
-      print(apps[i].icon);
     }
   }
+  return apps;
 }

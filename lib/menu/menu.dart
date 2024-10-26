@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yara_shell/menu/parser.dart';
 
 class SearchListWidget extends StatefulWidget {
   const SearchListWidget({super.key});
@@ -20,10 +21,10 @@ class AppDescription {
 
 class _SearchListWidgetState extends State<SearchListWidget> {
   // List of items to search through
-  final List<String> items = [];
+  List<AppDescription>? items;
 
   // List to hold the filtered items
-  List<String> filteredItems = [];
+  List<AppDescription> filteredItems = [];
 
   // Controller for the search field
   TextEditingController searchController = TextEditingController();
@@ -31,7 +32,7 @@ class _SearchListWidgetState extends State<SearchListWidget> {
   @override
   void initState() {
     super.initState();
-    filteredItems = items;
+    getAppList();
     searchController.addListener(() {
       filterList();
     });
@@ -45,11 +46,18 @@ class _SearchListWidgetState extends State<SearchListWidget> {
 
   // Method to filter the list based on the search query
   void filterList() {
+    if (items == null) return;
     setState(() {
       String query = searchController.text.toLowerCase();
-      filteredItems =
-          items.where((item) => item.toLowerCase().contains(query)).toList();
+      filteredItems = items!
+          .where((item) => item.name.toLowerCase().contains(query))
+          .toList();
     });
+  }
+
+  Future<void> getAppList() async {
+    final apps = await getApplications();
+    setState(() => items = apps);
   }
 
   @override
@@ -59,7 +67,7 @@ class _SearchListWidgetState extends State<SearchListWidget> {
       child: MaterialApp(
         home: Scaffold(
           appBar: AppBar(
-            title: const Text('Search List'),
+            title: const Text('Applications'),
           ),
           body: Column(
             children: [
@@ -74,25 +82,12 @@ class _SearchListWidgetState extends State<SearchListWidget> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  onChanged: (_) {
-                    print("Text Changed");
-                  },
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Search',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
               Expanded(
                 child: ListView.builder(
                   itemCount: filteredItems.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text(filteredItems[index]),
+                      title: Text(filteredItems[index].name),
                     );
                   },
                 ),

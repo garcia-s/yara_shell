@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 final themeData = ThemeData(
+  brightness: Brightness.dark,
   filledButtonTheme: FilledButtonThemeData(
     style: ButtonStyle(
       shape: WidgetStatePropertyAll<OutlinedBorder>(

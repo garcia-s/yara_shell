@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:yara_shell/menu/menu.dart';
 import 'package:yara_shell/shutdown.dart';
-import 'package:yara_shell/temp.dart';
 import 'package:yara_shell/views.dart';
 import 'package:yara_shell/widgets/ybar_button.dart';
 
@@ -28,13 +28,11 @@ class YBar extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             SquaredButton(
-              onPressed: () async {
-                await provider.addView(
-                  SearchListWidget(),
-                );
-              },
+              onPressed: () async => await provider.addView(
+                SearchListWidget(),
+              ),
               child: Icon(
-                Icons.power_settings_new,
+                Icons.menu,
               ),
             ),
             const SizedBox(width: 10),

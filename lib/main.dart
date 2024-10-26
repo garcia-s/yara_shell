@@ -15,8 +15,8 @@ void main() async {
       {
         "name": "main",
         "width": 1920,
-        "height": 50,
-        "exclusive_zone": 50,
+        "height": 40,
+        "exclusive_zone": 40,
         "layer": 2,
         "anchors": {
           "top": true,
