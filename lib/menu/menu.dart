@@ -74,45 +74,48 @@ class _SearchListWidgetState extends State<SearchListWidget> {
           child: SizedBox(
             width: 600,
             height: 600,
-            child: MaterialApp(
-              home: Scaffold(
-                appBar: AppBar(
-                  title: const Text('Applications'),
-                ),
-                body: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextField(
-                        controller: searchController,
-                        autofocus: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Search',
-                          border: OutlineInputBorder(),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: MaterialApp(
+                home: Scaffold(
+                  appBar: AppBar(
+                    title: const Text('Applications'),
+                  ),
+                  body: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: searchController,
+                          autofocus: true,
+                          decoration: const InputDecoration(
+                            labelText: 'Search',
+                            border: OutlineInputBorder(),
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: filteredItems.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(filteredItems[index].name),
-                            onTap: () async {
-                              final command =
-                                  filteredItems[index].command.split(" ");
-                              final res = await Process.run(
-                                command[0],
-                                command.skip(1).toList(),
-                                runInShell: true,
-                              );
-                              print(res.exitCode);
-                            },
-                          );
-                        },
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: filteredItems.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(filteredItems[index].name),
+                              onTap: () async {
+                                final command =
+                                    filteredItems[index].command.split(" ");
+                                final res = await Process.run(
+                                  command[0],
+                                  command.skip(1).toList(),
+                                  runInShell: true,
+                                );
+                                print(res.exitCode);
+                              },
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
