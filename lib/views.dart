@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
@@ -17,8 +16,8 @@ class ViewsProvider extends ChangeNotifier {
       [
         {
           "name": "main",
-          "width": 500,
-          "height": 500,
+          "width": 1929,
+          "height": 1080,
           "exclusive_zone": -1,
           "layer": 3,
           "anchors": {
@@ -42,7 +41,8 @@ class ViewsProvider extends ChangeNotifier {
     return res["view_id"];
   }
 
-  Future<void> removeView(int id) {}
+  Future<void> replaceView() async {}
+  Future<void> removeView(int id) async {}
 }
 
 class ViewConfig {

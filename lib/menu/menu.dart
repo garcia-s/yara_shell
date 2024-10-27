@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:yara_shell/menu/parser.dart';
 
@@ -31,11 +32,11 @@ class _SearchListWidgetState extends State<SearchListWidget> {
 
   @override
   void initState() {
-    super.initState();
     getAppList();
     searchController.addListener(() {
       filterList();
     });
+    super.initState();
   }
 
   @override
@@ -57,42 +58,64 @@ class _SearchListWidgetState extends State<SearchListWidget> {
 
   Future<void> getAppList() async {
     final apps = await getApplications();
-    setState(() => items = apps);
+    setState(() {
+      items = apps;
+      filteredItems = items!;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return MediaQuery.fromView(
       view: View.of(context),
-      child: MaterialApp(
-        home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Applications'),
-          ),
-          body: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: searchController,
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Search',
-                    border: OutlineInputBorder(),
-                  ),
+      child: Container(
+        color: Colors.black38,
+        child: Center(
+          child: SizedBox(
+            width: 600,
+            height: 600,
+            child: MaterialApp(
+              home: Scaffold(
+                appBar: AppBar(
+                  title: const Text('Applications'),
+                ),
+                body: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        controller: searchController,
+                        autofocus: true,
+                        decoration: const InputDecoration(
+                          labelText: 'Search',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: filteredItems.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(filteredItems[index].name),
+                            onTap: () async {
+                              final command =
+                                  filteredItems[index].command.split(" ");
+                              final res = await Process.run(
+                                command[0],
+                                command.skip(1).toList(),
+                                runInShell: true,
+                              );
+                              print(res.exitCode);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: filteredItems.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(filteredItems[index].name),
-                    );
-                  },
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
