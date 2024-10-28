@@ -24,7 +24,7 @@ void main() async {
           "bottom": false,
           "right": false,
         },
-        "keyboard_interactivity": 1,
+        "keyboard_interactivity": 0,
         "margin": [0, 0, 0, 0]
       },
     ],
