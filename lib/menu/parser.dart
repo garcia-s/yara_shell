@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:convert';
-
 import 'package:yara_shell/menu/locations.dart';
 import 'package:yara_shell/menu/menu.dart';
 
@@ -45,15 +44,19 @@ Future<Map<String, String>> readDesktopFile(File file) async {
 
 Future<List<AppDescription>> getApplications() async {
   final List<AppDescription> apps = [];
-  for (int i = 0; i < locations.length; i++) {
-    final dir = Directory(locations[i]);
+  for (int i = 0; i < appLocations.length; i++) {
+    final dir = Directory(appLocations[i]);
     if (!(await dir.exists())) {
       continue;
     }
 
     await for (var f in dir.list()) {
       if (f is! File || !f.path.endsWith("desktop")) continue;
+      print(f.path);
       final map = await readDesktopFile(f);
+
+      if (map["Type"] != "Application") continue;
+
       apps.add(
         AppDescription(
           name: map["Name"] ?? "",

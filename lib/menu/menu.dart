@@ -33,25 +33,24 @@ class _SearchListWidgetState extends State<SearchListWidget> {
   @override
   void initState() {
     getAppList();
-    searchController.addListener(() {
-      filterList();
-    });
     super.initState();
   }
 
   @override
   void dispose() {
-    searchController.dispose();
     super.dispose();
   }
 
   // Method to filter the list based on the search query
-  void filterList() {
+  void filterList(String str) {
     if (items == null) return;
     setState(() {
-      String query = searchController.text.toLowerCase();
       filteredItems = items!
-          .where((item) => item.name.toLowerCase().contains(query))
+          .where(
+            (item) => item.name.toLowerCase().contains(
+                  str.toLowerCase(),
+                ),
+          )
           .toList();
     });
   }
@@ -62,6 +61,15 @@ class _SearchListWidgetState extends State<SearchListWidget> {
       items = apps;
       filteredItems = items!;
     });
+  }
+
+  Future<void> launchApp(int index) async {
+    final command = filteredItems[index].command.split(" ");
+    await Process.run(
+      command[0],
+      command.skip(1).toList(),
+      runInShell: true,
+    );
   }
 
   @override
@@ -86,8 +94,10 @@ class _SearchListWidgetState extends State<SearchListWidget> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
-                          controller: searchController,
                           autofocus: true,
+                          onChanged: (str) => filterList(str),
+                          onSubmitted: (str) =>
+                              filteredItems.isNotEmpty ? launchApp(0) : null,
                           decoration: const InputDecoration(
                             labelText: 'Search',
                             border: OutlineInputBorder(),
@@ -100,16 +110,7 @@ class _SearchListWidgetState extends State<SearchListWidget> {
                           itemBuilder: (context, index) {
                             return ListTile(
                               title: Text(filteredItems[index].name),
-                              onTap: () async {
-                                final command =
-                                    filteredItems[index].command.split(" ");
-                                final res = await Process.run(
-                                  command[0],
-                                  command.skip(1).toList(),
-                                  runInShell: true,
-                                );
-                                print(res.exitCode);
-                              },
+                              onTap: () => launchApp(index),
                             );
                           },
                         ),
