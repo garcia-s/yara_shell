@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yara_shell/calendar.dart';
 import 'package:yara_shell/menu/menu.dart';
 import 'package:yara_shell/shutdown.dart';
 import 'package:yara_shell/views.dart';
@@ -41,6 +42,17 @@ class YBar extends StatelessWidget {
               child: Icon(
                 Icons.power_settings_new,
               ),
+            ),
+            Expanded(
+              child: Offstage(),
+            ),
+            FilledButton(
+              onPressed: () async {
+                await provider.addView(
+                  CalendarWidget(),
+                );
+              },
+              child: Text("10:20"),
             ),
             Expanded(
               child: Offstage(),
