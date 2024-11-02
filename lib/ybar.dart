@@ -22,7 +22,7 @@ class YBar extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             SquaredButton(
-              onPressed: () => provider.calendar = true,
+              onPressed: () {},
               child: Icon(
                 Icons.menu,
               ),
@@ -38,7 +38,7 @@ class YBar extends StatelessWidget {
               child: Offstage(),
             ),
             FilledButton(
-              onPressed: () async {},
+              onPressed: () => provider.calendar = true,
               child: Text("10:20"),
             ),
             Expanded(
