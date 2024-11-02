@@ -1,21 +1,24 @@
-import 'dart:ui';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 class ViewConfig {
   final String name;
-  final double height;
-  final double width;
+  final int height;
+  final int width;
+  final int exclusiveZone;
   final int layer;
-  final ViewAnchor anchors;
+  final WaylandAnchors anchors;
   final int keyboardInteractivity;
-  final List<double> margin;
+  final List<int> margin;
 
   ViewConfig({
     required this.name,
     required this.height,
     required this.width,
+    required this.exclusiveZone,
     required this.layer,
     required this.anchors,
     required this.keyboardInteractivity,
@@ -25,23 +28,24 @@ class ViewConfig {
   Map<String, dynamic> toJson() {
     return {
       "name": name,
-      "height": height,
       "width": width,
+      "height": height,
+      "exclusive_zone": exclusiveZone,
       "layer": layer,
-      "anchors": anchors.toJson(),
-      "keyboardInteractivity": keyboardInteractivity,
       "margin": margin,
+      "anchors": anchors.toJson(),
+      "keyboard_interactivity": keyboardInteractivity,
     };
   }
 }
 
-class ViewAnchor {
+class WaylandAnchors {
   final bool top;
   final bool right;
   final bool bottom;
   final bool left;
 
-  ViewAnchor({
+  WaylandAnchors({
     this.top = false,
     this.right = false,
     this.bottom = false,
@@ -90,48 +94,26 @@ class _WaylandViewState extends State<WaylandView> {
   }
 
   @override
+  void dispose() {
+    _removeView();
+    super.dispose();
+  }
+
+  _removeView() async {}
+
+  @override
   Widget build(BuildContext context) {
     if (viewId == null) return Offstage();
-    return widget.child;
-  }
-}
+    final view = PlatformDispatcher.instance.view(
+      id: viewId!,
+    )!;
 
-class ViewsProvider extends ChangeNotifier {
-  Map<int, Widget> _views = {};
-  Map<int, Widget> get views => _views;
-
-  static ViewsProvider of(context, {listen = false}) =>
-      Provider.of(context, listen: listen);
-
-  Future<int> addView(Widget view) async {
-    final Map<String, dynamic> res = await SystemChannels.platform.invokeMethod(
-      "add_view",
-      [
-        {
-          "name": "main",
-          "width": 400,
-          "height": 400,
-          "exclusive_zone": -1,
-          "layer": 3,
-          "anchors": {
-            "top": true,
-            "left": true,
-            "bottom": true,
-            "right": true,
-          },
-          "keyboard_interactivity": 1,
-          "margin": [0, 40, 0, 0]
-        },
-      ],
+    return View(
+      view: view,
+      child: MediaQuery(
+        data: MediaQueryData.fromView(view),
+        child: widget.child,
+      ),
     );
-    _views[res["view_id"]!] = View(
-      view: PlatformDispatcher.instance.view(
-        id: res["view_id"]!,
-      )!,
-      child: view,
-    );
-
-    notifyListeners();
-    return res["view_id"];
   }
 }

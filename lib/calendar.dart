@@ -6,6 +6,7 @@ class CalendarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     final DateTime firstDayOfMonth =
         DateTime(currentDate.year, currentDate.month, 1);
     final DateTime lastDayOfMonth =
@@ -15,20 +16,30 @@ class CalendarWidget extends StatelessWidget {
     // Days of the week headers
     final List<String> daysOfWeek = DateFormat.E().dateSymbols.SHORTWEEKDAYS;
 
-    return SizedBox(
-      width: 400,
-      height: 400,
+    return Container(
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: colors.surface,
+      ),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: daysOfWeek.map((day) {
-              return Expanded(
-                child: Center(
-                    child: Text(day,
-                        style: TextStyle(fontWeight: FontWeight.bold))),
-              );
-            }).toList(),
+            children: daysOfWeek.map(
+              (day) {
+                return Expanded(
+                  child: Center(
+                    child: Text(
+                      day,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ).toList(),
           ),
           SizedBox(height: 8.0),
           GridView.builder(
@@ -52,7 +63,7 @@ class CalendarWidget extends StatelessWidget {
                 child: Container(
                   decoration: isToday
                       ? BoxDecoration(
-                          color: Colors.blueAccent,
+                          color: colors.primary,
                           borderRadius: BorderRadius.circular(8.0),
                         )
                       : null,
@@ -60,7 +71,6 @@ class CalendarWidget extends StatelessWidget {
                     child: Text(
                       '$dayNumber',
                       style: TextStyle(
-                        color: isToday ? Colors.white : Colors.black87,
                         fontWeight:
                             isToday ? FontWeight.bold : FontWeight.normal,
                       ),

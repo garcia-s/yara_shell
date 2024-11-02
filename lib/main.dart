@@ -1,34 +1,13 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:yara_shell/network_client.dart';
+import 'package:yara_shell/calendar.dart';
+import 'package:yara_shell/provider.dart';
 import 'package:yara_shell/theme.dart';
 import 'package:yara_shell/views.dart';
 import 'package:yara_shell/ybar.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChannels.platform.invokeMethod(
-    "add_view",
-    [
-      {
-        "name": "main",
-        "width": 1920,
-        "height": 40,
-        "exclusive_zone": 40,
-        "layer": 2,
-        "anchors": {
-          "top": true,
-          "left": false,
-          "bottom": false,
-          "right": false,
-        },
-        "keyboard_interactivity": 0,
-        "margin": [0, 0, 0, 0]
-      },
-    ],
-  );
   runWidget(const Yara());
 }
 
@@ -37,28 +16,49 @@ class Yara extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: themeData,
-      child: Directionality(
-        textDirection: TextDirection.ltr,
-        child: MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ViewsProvider>(
-              create: (_) => ViewsProvider(),
-            ),
-            ChangeNotifierProvider<NetworkClientProvider>(
-              create: (_) => NetworkClientProvider(),
-            ),
-          ],
-          child: Consumer<ViewsProvider>(
-            builder: (_, provider, widget) {
+    return ChangeNotifierProvider<ShellProvider>(
+      create: (_) => ShellProvider(),
+      child: Theme(
+        data: themeData,
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: Consumer<ShellProvider>(
+            builder: (_, state, __) {
               return Column(
                 children: [
-                  View(
-                    view: PlatformDispatcher.instance.view(id: 0)!,
+                  WaylandView(
+                    config: ViewConfig(
+                      name: "ybar",
+                      height: 40,
+                      width: 1920,
+                      exclusiveZone: 40,
+                      layer: 1,
+                      anchors: WaylandAnchors(top: true),
+                      keyboardInteractivity: 0,
+                      margin: [0, 0, 0, 0],
+                    ),
                     child: YBar(),
                   ),
-                  ...provider.views.values
+                  state.calendarOpen
+                      ? WaylandView(
+                          config: ViewConfig(
+                            name: "calendar",
+                            height: 400,
+                            width: 400,
+                            exclusiveZone: 0,
+                            layer: 3,
+                            anchors: WaylandAnchors(
+                              top: true,
+                              bottom: false,
+                              left: true,
+                              right: true,
+                            ),
+                            keyboardInteractivity: 0,
+                            margin: [0, 0, 0, 0],
+                          ),
+                          child: CalendarWidget(),
+                        )
+                      : Offstage()
                 ],
               );
             },

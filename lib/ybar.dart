@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:yara_shell/calendar.dart';
-import 'package:yara_shell/menu/menu.dart';
-import 'package:yara_shell/shutdown.dart';
-import 'package:yara_shell/views.dart';
+import 'package:yara_shell/provider.dart';
 import 'package:yara_shell/widgets/ybar_button.dart';
 
 class YBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final provider = ShellProvider.of(context);
     final view = View.of(context);
-    final provider = ViewsProvider.of(context);
     return MediaQuery(
       data: MediaQueryData.fromView(view),
       child: Padding(
@@ -18,20 +15,14 @@ class YBar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SquaredButton(
-              onPressed: () async {
-                await provider.addView(
-                  ShutdownPanel(),
-                );
-              },
+              onPressed: () async {},
               child: Icon(
                 Icons.power_settings_new,
               ),
             ),
             const SizedBox(width: 10),
             SquaredButton(
-              onPressed: () async => await provider.addView(
-                SearchListWidget(),
-              ),
+              onPressed: () => provider.calendar = true,
               child: Icon(
                 Icons.menu,
               ),
@@ -47,11 +38,7 @@ class YBar extends StatelessWidget {
               child: Offstage(),
             ),
             FilledButton(
-              onPressed: () async {
-                await provider.addView(
-                  CalendarWidget(),
-                );
-              },
+              onPressed: () async {},
               child: Text("10:20"),
             ),
             Expanded(
