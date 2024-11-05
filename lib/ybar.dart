@@ -22,7 +22,7 @@ class YBar extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             SquaredButton(
-              onPressed: () {},
+              onPressed: () => provider.menuOpen = true,
               child: Icon(
                 Icons.menu,
               ),
