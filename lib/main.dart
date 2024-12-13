@@ -5,7 +5,7 @@ import 'package:yara_shell/menu/menu.dart';
 import 'package:yara_shell/provider.dart';
 import 'package:yara_shell/theme.dart';
 import 'package:yara_shell/views.dart';
-import 'package:yara_shell/ybar.dart';
+import 'package:yara_shell/ybar/ybar.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

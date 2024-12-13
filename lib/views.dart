@@ -99,7 +99,14 @@ class _WaylandViewState extends State<WaylandView> {
     super.dispose();
   }
 
-  _removeView() async {}
+  _removeView() async {
+    final res = await SystemChannels.platform.invokeMethod(
+      "remove_view",
+      [
+        viewId,
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

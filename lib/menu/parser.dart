@@ -52,7 +52,6 @@ Future<List<AppDescription>> getApplications() async {
 
     await for (var f in dir.list()) {
       if (f is! File || !f.path.endsWith("desktop")) continue;
-      print(f.path);
       final map = await readDesktopFile(f);
 
       if (map["Type"] != "Application") continue;
