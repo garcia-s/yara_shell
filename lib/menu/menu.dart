@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:yara_shell/menu/parser.dart';
+import 'package:yara_shell/provider.dart';
 
 class SearchListWidget extends StatefulWidget {
   const SearchListWidget({super.key});
@@ -80,8 +81,8 @@ class _SearchListWidgetState extends State<SearchListWidget> {
         color: Colors.black38,
         child: Center(
           child: SizedBox(
-            width: 600,
-            height: 600,
+            width: 500,
+            height: 500,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: MaterialApp(
@@ -96,8 +97,12 @@ class _SearchListWidgetState extends State<SearchListWidget> {
                         child: TextField(
                           autofocus: true,
                           onChanged: (str) => filterList(str),
-                          onSubmitted: (str) =>
-                              filteredItems.isNotEmpty ? launchApp(0) : null,
+                          onSubmitted: (str) {
+                            if (filteredItems.isNotEmpty) {
+                              ShellProvider.of(context).closeAll();
+                              launchApp(0);
+                            }
+                          },
                           decoration: const InputDecoration(
                             labelText: 'Search',
                             border: OutlineInputBorder(),

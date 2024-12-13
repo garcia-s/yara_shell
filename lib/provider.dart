@@ -18,6 +18,12 @@ class ShellProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  static ShellProvider of(BuildContext c, {bool listen = false}) =>
+  closeAll() {
+    _menuOpen = false;
+    _calendarOpen = false;
+    notifyListeners();
+  }
+
+  static ShellProvider of(BuildContext c, {listen = false}) =>
       Provider.of(c, listen: listen);
 }
