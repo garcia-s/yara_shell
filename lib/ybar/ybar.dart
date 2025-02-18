@@ -38,7 +38,9 @@ class YBar extends StatelessWidget {
               child: Offstage(),
             ),
             FilledButton(
-              onPressed: () => provider.calendar = true,
+              onPressed: () => provider.calendarOpen
+                  ? provider.calendar = false
+                  : provider.calendar = true,
               child: Text("10:20"),
             ),
             Expanded(

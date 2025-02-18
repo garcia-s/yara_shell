@@ -23,7 +23,7 @@ class Yara extends StatelessWidget {
         data: themeData,
         child: Directionality(
           textDirection: TextDirection.ltr,
-          child: Column(
+          child: Stack(
             children: [
               WaylandView(
                 config: ViewConfig(

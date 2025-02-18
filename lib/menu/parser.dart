@@ -45,7 +45,7 @@ Future<Map<String, String>> readDesktopFile(File file) async {
 Future<List<AppDescription>> getApplications() async {
   final List<AppDescription> apps = [];
   for (int i = 0; i < appLocations.length; i++) {
-    final dir = Directory(appLocations[i]);
+    final dir = Directory("${appLocations[i]}/applications");
     if (!(await dir.exists())) {
       continue;
     }

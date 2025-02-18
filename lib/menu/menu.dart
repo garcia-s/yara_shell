@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:yara_shell/menu/locations.dart';
 import 'package:yara_shell/menu/parser.dart';
 import 'package:yara_shell/provider.dart';
 
@@ -58,6 +59,8 @@ class _SearchListWidgetState extends State<SearchListWidget> {
 
   Future<void> getAppList() async {
     final apps = await getApplications();
+
+    print(appLocations);
     setState(() {
       items = apps;
       filteredItems = items!;
@@ -77,50 +80,53 @@ class _SearchListWidgetState extends State<SearchListWidget> {
   Widget build(BuildContext context) {
     return MediaQuery.fromView(
       view: View.of(context),
-      child: Container(
-        color: Colors.black38,
-        child: Center(
-          child: SizedBox(
-            width: 500,
-            height: 500,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: MaterialApp(
-                home: Scaffold(
-                  appBar: AppBar(
-                    title: const Text('Applications'),
-                  ),
-                  body: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          autofocus: true,
-                          onChanged: (str) => filterList(str),
-                          onSubmitted: (str) {
-                            if (filteredItems.isNotEmpty) {
-                              ShellProvider.of(context).closeAll();
-                              launchApp(0);
-                            }
-                          },
-                          decoration: const InputDecoration(
-                            labelText: 'Search',
-                            border: OutlineInputBorder(),
+      child: GestureDetector(
+        onTap: () => ShellProvider.of(context).closeMenu(),
+        child: Container(
+          color: Colors.black38,
+          child: Center(
+            child: SizedBox(
+              width: 500,
+              height: 500,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: MaterialApp(
+                  home: Scaffold(
+                    appBar: AppBar(
+                      title: const Text('Applications'),
+                    ),
+                    body: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextField(
+                            autofocus: true,
+                            onChanged: (str) => filterList(str),
+                            onSubmitted: (str) {
+                              if (filteredItems.isNotEmpty) {
+                                ShellProvider.of(context).closeAll();
+                                launchApp(0);
+                              }
+                            },
+                            decoration: const InputDecoration(
+                              labelText: 'Search',
+                              border: OutlineInputBorder(),
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: filteredItems.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(filteredItems[index].name),
-                              onTap: () => launchApp(index),
-                            );
-                          },
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: filteredItems.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Text(filteredItems[index].name),
+                                onTap: () => launchApp(index),
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
